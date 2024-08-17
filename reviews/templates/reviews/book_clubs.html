@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Clubs{% endblock %}
+
+{% block content %}
+<h2>Book Clubs</h2>
+<a href="{% url 'add_book_club' %}" class="btn-add-club">Add Book Club</a>
+<div class="club-card-container">
+    {% for club in clubs %}
+    <div class="club-card">
+        <a href="{% url 'book_club_detail' club.id %}">
+            <h3>{{ club.name }}</h3>
+        </a>
+        <p>{{ club.description }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

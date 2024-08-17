@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-text">
+        <h2>Welcome to Tanvir's Book Review App</h2>
+        <p>"Explore, Review, and Connect – Your Gateway to the World of Books!"</p>
+        <a href="#books-section" class="btn-explore">Lets Go</a>
+    </div>
+    <div class="hero-image">
+        <img src="{% static 'reviews/book.jpg' %}" alt="Book Image">
+    </div>
+</div>
+
+<h2>Recently Reviewed Books</h2>
+
+<div class="recently-reviewed-container">
+    {% for book in recent_books %}
+    <div class="card">
+        {% if book.cover_photo %}
+        <img class="cover" src="{{ book.cover_photo.url }}" alt="{{ book.title }} cover photo">
+        {% else %}
+        <div class="no-cover">No Cover</div>
+        {% endif %}
+        <h3>{{ book.title }}</h3>
+        <p>Author: {{ book.author }}</p>
+        <p>Category: {{ book.get_category_display }}</p>
+        <p>Average Rating: {{ book.average_rating|floatformat:1 }}</p>
+        {% if book.language %}
+            <p>Language: {{ book.language }}</p>
+        {% endif %}
+        <a href="{% url 'book_detail' book.id %}"class="btn-details">View Details</a>
+        {% if book.pdf %}
+            <a href="{{ book.pdf.url }}" class="btn-download">Download PDF</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<h2 id="books-section">All Books</h2>
+<div class="card-container">
+    {% for book in books %}
+    <div class="card">
+        {% if book.cover_photo %}
+        <img class="cover" src="{{ book.cover_photo.url }}" alt="{{ book.title }} cover photo">
+        {% else %}
+        <div class="no-cover">No Cover</div>
+        {% endif %}
+        <h3>{{ book.title }}</h3>
+        <p>Author: {{ book.author }}</p>
+        <p>Category: {{ book.get_category_display }}</p>
+        <p>Average Rating: {{ book.average_rating|floatformat:1 }}</p>
+        {% if book.language %}
+            <p>Language: {{ book.language }}</p>
+        {% endif %}
+        <a href="{% url 'book_detail' book.id %}"class="btn-details">View Details</a>
+        {% if book.pdf %}
+            <a href="{{ book.pdf.url }}" class= "btn-download">Download PDF</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+<div class="pagination"><span class="step-links">
+        {% if books.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ books.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <spanclass="current">
+            Page {{ books.number }} of {{ books.paginator.num_pages }}.
+        </span>
+
+        {% if books.has_next %}
+            <a href="?page={{ books.next_page_number }}">next</a>
+            <a href="?page={{ books.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span></div>
+{% endblock %}

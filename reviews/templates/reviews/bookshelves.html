@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookshelves{% endblock %}
+
+{% block content %}
+<h1>My Bookshelves</h1>
+<a href="{% url 'add_bookshelf' %}" class="btn-add-shelf">Add Bookshelf</a>
+<div class="shelf-container">
+    {% for shelf in bookshelves %}
+    <div class="shelf-card">
+        <h2>{{ shelf.name }}</h2>
+        <div class="books-preview">
+            {% for book in shelf.books.all %}
+            <div class="book-preview">
+                {% if book.cover_photo %}
+                <img src="{{ book.cover_photo.url }}" alt="{{ book.title }} cover photo">
+                {% else %}
+                <div class="no-cover">No Cover</div>
+                {% endif %}
+                <p>{{ book.title }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'bookshelf_detail' shelf.id %}" class="btn-view-details">View Details</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
